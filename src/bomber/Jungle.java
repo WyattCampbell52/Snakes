@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package snakes;
+package bomber;
 
 import environment.Environment;
 import grid.Grid;
+import images.ResourceTools;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -20,6 +22,7 @@ import java.awt.event.MouseEvent;
 class Jungle extends Environment {
 
     Grid grid;
+    Image soldier;
     Point point;
     Point snake;
     int x;
@@ -27,7 +30,8 @@ class Jungle extends Environment {
     
     public Jungle() {
         
-        grid = new Grid(32, 20, 25, 25, new Point(50,50), Color.black);
+        grid = new Grid(54, 34, 15, 15, point = new Point(50,50), Color.black);
+        soldier = ResourceTools.loadImageFromResource("bomber/Soldier Head.png");
         
     }
 
@@ -55,10 +59,10 @@ class Jungle extends Environment {
             x = x - 1;
             System.out.println("Left");
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            y = x - 1;
+            y = y - 1;
             System.out.println("Up");
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            y = x + 1;
+            y = y + 1;
             System.out.println("Down");
         }  
         System.out.println(x);
@@ -67,13 +71,13 @@ class Jungle extends Environment {
 
     @Override
     public void keyReleasedHandler(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_W) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
             System.out.println("Released Up");
-        }else if (e.getKeyCode() == KeyEvent.VK_A) {
+        }else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             System.out.println("Released Left");
-        }else if (e.getKeyCode() == KeyEvent.VK_S) {
+        }else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             System.out.println("Released Down");
-        }else if (e.getKeyCode() == KeyEvent.VK_D) {
+        }else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             System.out.println("Released RIght");
         }
     }
@@ -81,13 +85,16 @@ class Jungle extends Environment {
     @Override
     public void environmentMouseClicked(MouseEvent e) {
         System.out.println("mouse clicked at " + e.getPoint());        
-        System.out.println("In cell " + grid.getCellLocationFromSystemCoordinate( point = e.getPoint()));
+        System.out.println("In cell " + grid.getCellLocationFromSystemCoordinate(e.getPoint()));
     }
 
     @Override
     public void paintEnvironment(Graphics graphics) {
         if (grid != null) {
             grid.paintComponent(graphics);
+        }
+        if (soldier != null) {
+            graphics.drawImage(soldier, grid.getColumns(), grid.getRows() , this);
         }
         
     }
